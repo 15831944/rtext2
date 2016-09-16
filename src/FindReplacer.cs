@@ -12,12 +12,6 @@ namespace rtext
         public string Replace;
         public List<string> Found;
 
-        // учитывать регистр
-        // только полное совпадение строки
-        // без учета разделителей
-        // нечеткий поиск
-        // регулярные выражения
-
         public FindReplacer(string find, string replace)
         {
             Find = find;

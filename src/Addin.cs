@@ -124,10 +124,15 @@ namespace rtext
                 if (tbl.NumRows > 0 && tbl.NumColumns > 0) {
                     for(var r=0; r<tbl.NumRows; r++) {
                         for(var c=0; c<tbl.NumColumns; c++) {
-                            var s = tbl.GetTextString(r, c, 0, DB.FormatOption.FormatOptionNone);
+                            var s = tbl.GetTextString(r, c, 0, DB.FormatOption.IgnoreMtextFormat);
                             if (findReplacer.ContainsIn(s)) {
-                                tbl.SetTextString(r, c, s.Replace(findReplacer.Find, findReplacer.Replace));
-                                replaced++;
+                                s = tbl.GetTextString(r, c, 0, DB.FormatOption.FormatOptionNone);
+                                if (s.Contains(findReplacer.Find)) {
+                                    tbl.SetTextString(r, c, s.Replace(findReplacer.Find, findReplacer.Replace));
+                                    replaced++;
+                                } else {
+                                    findReplacer.Found.Add(s);
+                                }
                             }
                         }
                     }
