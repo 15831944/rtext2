@@ -20,15 +20,18 @@ namespace rtext
             Found = new List<string>();
         }
 
-        public bool ContainsIn(string s)
+        public bool ContainsIn(string text, string textWithoutFormat)
         {
-            if (s.Contains(Find)) {
+            if (text.Contains(Find)) {
                 return true;
             }
             if (AlmostFind.Length > 2) {
-                var almost = RemoveSeparator(s).ToUpper();
-                if (almost.Contains(AlmostFind)) {
-                    Found.Add(s);
+                var parts = textWithoutFormat.Split('\n');
+                foreach(var part in parts) {
+                    var almost = RemoveSeparator(part).ToUpper();
+                    if (almost.Contains(AlmostFind)) {
+                        Found.Add(part.Trim());
+                    }
                 }
             }
             return false;

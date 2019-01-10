@@ -118,43 +118,36 @@ namespace rtext
             int replaced = 0;
             var ent = tr.GetObject(objId, DB.OpenMode.ForWrite, false);
             
-            var entType = ent.GetType();
-            if (entType == typeof(DB.Table)) {
+            if (ent is DB.Table) {
                 var tbl = ent as DB.Table;
                 if (tbl.NumRows > 0 && tbl.NumColumns > 0) {
                     for(var r=0; r<tbl.NumRows; r++) {
                         for(var c=0; c<tbl.NumColumns; c++) {
-                            var s = tbl.GetTextString(r, c, 0, DB.FormatOption.IgnoreMtextFormat);
-                            if (findReplacer.ContainsIn(s)) {
-                                s = tbl.GetTextString(r, c, 0, DB.FormatOption.FormatOptionNone);
-                                if (s.Contains(findReplacer.Find)) {
-                                    tbl.SetTextString(r, c, s.Replace(findReplacer.Find, findReplacer.Replace));
-                                    replaced++;
-                                } else {
-                                    findReplacer.Found.Add(s);
-                                }
+                            var text = tbl.GetTextString(r, c, 0, DB.FormatOption.FormatOptionNone);
+                            var textWithoutFormat = tbl.GetTextString(r, c, 0, DB.FormatOption.IgnoreMtextFormat);
+                            if (findReplacer.ContainsIn(text, textWithoutFormat)) {
+                                tbl.SetTextString(r, c, text.Replace(findReplacer.Find, findReplacer.Replace));
+                                replaced++;
                             }
                         }
                     }
                 }
-            }
-            if (entType == typeof(DB.MText)) {
-                var text = ent as DB.MText;
-                var s = text.Contents;
-                if (findReplacer.ContainsIn(s)) {
-                    text.Contents = s.Replace(findReplacer.Find, findReplacer.Replace);
+            } else if (ent is DB.MText) {
+                var mtext = ent as DB.MText;
+                var text = mtext.Contents;
+                var textWithoutFormat = mtext.Text;
+                if (findReplacer.ContainsIn(text, textWithoutFormat)) {
+                    mtext.Contents = text.Replace(findReplacer.Find, findReplacer.Replace);
                     replaced++;
                 }
-            }
-            if (entType == typeof(DB.DBText)) {
-                var text = ent as DB.DBText;
-                var s = text.TextString;
-                if (findReplacer.ContainsIn(s)) {
-                    text.TextString = s.Replace(findReplacer.Find, findReplacer.Replace);
+            } else if (ent is DB.DBText) {
+                var dbtext = ent as DB.DBText;
+                var text = dbtext.TextString;
+                if (findReplacer.ContainsIn(text, text)) {
+                    dbtext.TextString = text.Replace(findReplacer.Find, findReplacer.Replace);
                     replaced++;
                 }
-            }
-            if (entType == typeof(DB.BlockReference)) {
+            } else if (ent is DB.BlockReference) {
                 var br = ent as DB.BlockReference;
                 var brId = br.IsDynamicBlock ? br.DynamicBlockTableRecord : br.BlockTableRecord;
                 var btr = (DB.BlockTableRecord)tr.GetObject(brId, DB.OpenMode.ForRead, false);
