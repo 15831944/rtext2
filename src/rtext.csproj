@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
-    <ProjectGuid>{E3F59458-A332-4933-98B2-8C49988E2F48}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{A631BC2B-AA56-4CAF-95B8-CC638962B021}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <PlatformTarget Condition=" '$(PlatformTarget)' == '' ">x86</PlatformTarget>
     <OutputType>Library</OutputType>
     <RootNamespace>rtext</RootNamespace>
     <AssemblyName>rtext</AssemblyName>
@@ -14,10 +15,10 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <NoWin32Manifest>False</NoWin32Manifest>
-    <IntermediateOutputPath>obj\$(Configuration)\x64\</IntermediateOutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\$(PlatformTarget)\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>..\build\debug\x64\</OutputPath>
+    <OutputPath>..\build\debug\$(PlatformTarget)\</OutputPath>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>Full</DebugType>
     <Optimize>False</Optimize>
@@ -27,30 +28,20 @@
     <StartProgram>C:\Program Files\AutoCAD 2008\acad.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>..\build\release\x64\</OutputPath>
+    <OutputPath>..\build\release\$(PlatformTarget)\</OutputPath>
     <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
     <Optimize>True</Optimize>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <BaseAddress>4194304</BaseAddress>
-    <PlatformTarget>x64</PlatformTarget>
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <FileAlignment>4096</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="acdbmgd">
-      <HintPath>..\autocad\x64\acdbmgd.dll</HintPath>
+      <HintPath>..\autocad\$(PlatformTarget)\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acmgd">
-      <HintPath>..\autocad\x64\acmgd.dll</HintPath>
+      <HintPath>..\autocad\$(PlatformTarget)\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
